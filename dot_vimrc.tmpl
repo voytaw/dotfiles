@@ -10,8 +10,12 @@ set undofile
 set undodir=~/.cache/vim/undo//
 set directory=~/.cache/vim/swap//
 
+"call plug#begin('~/.vim/plugged')
+"  Plug 'lervag/vimtex'
+"call plug#end()
+
 call plug#begin('~/.vim/plugged')
-  Plug 'lervag/vimtex'
+  Plug 'lervag/vimtex', { 'tag': 'v2.15' }
 call plug#end()
 
 let g:vimtex_compiler_method = 'latexmk'

@@ -1,0 +1,4 @@
+# guest
+git add .gitignore
+git commit -m "fix(gitignore): re-include figures i v projektech (!**/figures/*.pdf)"
+git push

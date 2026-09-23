@@ -1,0 +1,23 @@
+" ~/.vimrc  (chezmoi template) – arch-neutralni config, binarky NEsdileny
+set nocompatible
+syntax on
+filetype plugin indent on
+set encoding=utf-8
+set number relativenumber
+set expandtab shiftwidth=2 tabstop=2
+set undofile
+" undo/swap do LOKALNI cache (per-arch, nesdilet)
+set undodir=~/.cache/vim/undo//
+set directory=~/.cache/vim/swap//
+
+call plug#begin('~/.vim/plugged')
+  Plug 'lervag/vimtex'
+call plug#end()
+
+let g:vimtex_compiler_method = 'latexmk'
+let g:vimtex_compiler_latexmk = { 'options': ['-lualatex','-synctex=1','-interaction=nonstopmode'] }
+{{ if eq .chezmoi.os "linux" -}}
+" nahled deleguje na macOS Skim
+let g:vimtex_view_enabled = 0
+{{- end }} 
+

@@ -1,4 +1,8 @@
-# guest
-git add .gitignore
-git commit -m "fix(gitignore): re-include figures i v projektech (!**/figures/*.pdf)"
-git push
+# ~/.local/share/chezmoi/.chezmoiignore
+# Generovane / per-arch veci, ktere se NEVERZUJI (kompiluji se lokalne)
+.vim/plugged
+.vim/autoload
+.cache
+.local/share/nvim
+.local/state/nvim
+

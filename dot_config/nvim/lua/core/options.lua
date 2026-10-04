@@ -72,7 +72,11 @@ opt.cmdheight = 2
 opt.showmatch = true
 opt.cursorline = true
 opt.signcolumn = "yes"
-opt.termguicolors = true
+-- termguicolors jen když terminál/GUI umí truecolor (Neovide, iTerm2);
+-- Terminal.app spadne na 256-color fallback colorschemu
+local ct = os.getenv("COLORTERM")
+opt.termguicolors = (ct == "truecolor" or ct == "24bit")
+--opt.termguicolors = true
 opt.scrolloff = 8
 opt.sidescrolloff = 8
 

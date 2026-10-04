@@ -299,33 +299,44 @@ require("lazy").setup({
         tag = "v2.15",                       -- PIN: bookworm ma Vim 9.0; konzistence s ~/.vimrc
         lazy = false,
         ft = { "tex", "latex", "bib" },
-        config = function()
-            -- ──────────────────────────────────────────────
-            -- Kompilator: latexmk (globalni ~/.latexmkrc v repu ridi
-            -- lualatex + -shell-escape + synctex + biber + out_dir).
-            -- Explicitni options ponechany jako fallback mimo repo.
-            -- ──────────────────────────────────────────────
-            vim.g.vimtex_compiler_method = "latexmk"
-
-            -- ──────────────────────────────────────────────
-            -- PDF nahled per-OS:
-            -- macOS (nativni nvim): primo Skim viewer + forward-search
-            -- Linux guest (headless): view vypnut, Skim na macOS resi auto-reload
-            -- ----------------------------------------------
-            if vim.fn.has("mac") == 1 then
-                vim.g.vimtex_view_method = "skim"
-            else
-                vim.g.vimtex_view_enabled = 0
-            end
-
-            -- ──────────────────────────────────────────────
-            -- Obecne nastaveni (beze zmeny)
-            -- ──────────────────────────────────────────────
-            vim.g.vimtex_syntax_enabled = 1
-            vim.g.vimtex_quickfix_mode = 2
-            vim.g.vimtex_quickfix_open_on_warning = 0
-            vim.g.vimtex_syntax_conceal_disable = 1
-
+        init = function()
+                -- VimTeX cte g:vimtex_* pri inicializaci pluginu -> MUSI byt v `init`
+                -- (nikoliv `config`, ktery bezi az PO nacteni -> prepsal by se default -pdf).
+        
+                -- Kompilator: latexmk. Monorepo staví pres LuaLaTeX do out/
+                -- (shoda s projektovym .latexmkrc: lualatex + shell-escape + synctex + biber).
+                vim.g.vimtex_compiler_method = "latexmk"
+                -- Default (_) prepneme z -pdf (pdflatex) na -lualatex pro cely monorepo.
+                vim.g.vimtex_compiler_latexmk_engines = {
+                    _ = "-lualatex",
+                } 
+                vim.g.vimtex_compiler_latexmk = {
+                    out_dir = "out",
+                    options = {
+                        "-shell-escape",
+                        "-file-line-error",
+                        "-synctex=1",
+                        "-interaction=nonstopmode",
+                    },
+                }
+        
+                -- PDF nahled per-OS:
+                -- macOS (nativni nvim): Skim viewer + forward-search
+                -- Linux guest (headless): view vypnut, Skim na macOS resi auto-reload
+                if vim.fn.has("mac") == 1 then
+                    vim.g.vimtex_view_method = "skim"
+                else
+                    vim.g.vimtex_view_enabled = 0
+                end
+        
+                -- Obecne nastaveni
+                vim.g.vimtex_syntax_enabled = 1
+                vim.g.vimtex_quickfix_mode = 2
+                vim.g.vimtex_quickfix_open_on_warning = 0
+                vim.g.vimtex_syntax_conceal_disable = 1
+            end,
+            config = function()
+                -- 
             -- ──────────────────────────────────────────────
             -- Klavesove zkratky pro LaTeX soubory
             -- ──────────────────────────────────────────────

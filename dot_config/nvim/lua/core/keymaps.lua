@@ -139,3 +139,12 @@ map("v", "<C-S-Up>",   ":m '<-2<CR>gv=gv", { desc = "Přesunout výběr nahoru" 
 map("v", "<M-S-Down>", ":m '>+1<CR>gv=gv", { desc = "Přesunout výběr dolů" })
 map("v", "<M-S-Up>",   ":m '<-2<CR>gv=gv", { desc = "Přesunout výběr nahoru" })
   
+-- --------------------------------------------------------------------------
+-- Telescope keymapy (do core/keymaps.lua)
+-- --------------------------------------------------------------------------
+local tb = require("telescope.builtin")
+map("n", "<leader>ff", tb.find_files,  { desc = "Najít soubor" })
+map("n", "<leader>fg", tb.live_grep,   { desc = "Hledat text (grep)" })
+map("n", "<leader>fb", tb.buffers,     { desc = "Buffery" })
+map("n", "<leader>fh", tb.help_tags,   { desc = "Nápověda" })
+map("n", "<leader>fr", tb.oldfiles,    { desc = "Nedávné soubory" })

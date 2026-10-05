@@ -135,7 +135,7 @@ set_theme(theme_index, true)
 -- FONTY (pouze Neovide)
 -- ══════════════════════════════════════════════════════════════
 
-if vim.g.neovide then
+do  -- FONTY blok: detekce Neovide AZ ZA BEHU (headless-first start!)
 
     local fonts = {
     -- NOVÉ: načtení uloženého indexu
@@ -236,7 +236,13 @@ if vim.g.neovide then
 
     -- NOVÉ: přidán parametr silent
     local function set_font(index, silent)
-        font_index = index
+        if not vim.g.neovide then
+            if not silent then
+                vim.notify("Přepínání fontů je dostupné pouze v Neovide", vim.log.levels.WARN)
+            end
+        return
+    end
+    font_index = index        
         local f = fonts[font_index]
         vim.opt.guifont = f.name .. ":h" .. f.size
         if not silent then
@@ -277,12 +283,12 @@ if vim.g.neovide then
         desc = "Zobrazit/vybrat font (:Font nebo :Font 3)",
     })
 
-    -- NOVÉ: tichý start z uloženého indexu
-    set_font(font_index, true)
-
-else
-    -- V terminálu jen informace
-    vim.keymap.set("n", "<F9>", function()
-        vim.notify("Přepínání fontů je dostupné pouze v Neovide", vim.log.levels.WARN)
-    end, { desc = "Font (jen Neovide)" })
+    -- Aplikuj ulozeny font AZ kdyz se pripoji Neovide UI (ne pri headless startu!)
+    vim.api.nvim_create_autocmd("UIEnter", {
+        callback = function()
+            if vim.g.neovide then
+                set_font(font_index, true)
+            end
+        end,
+    })
 end

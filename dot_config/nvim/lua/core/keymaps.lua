@@ -106,12 +106,15 @@ map("n", "<Leader>fp", function()
 end, { desc = "Kopírovat cestu souboru" })
 
 -- --------------------------------------------------------------------------
--- Neovide: správné vkládání ze schránky ve všech režimech
--- --------------------------------------------------------------------------
-if vim.g.neovide then
-    vim.keymap.set({"n", "v"}, "<C-S-v>", '"+P',  { desc = "Paste (normal/visual)" })
-    vim.keymap.set("i",       "<C-S-v>", "<C-o>\"+P", { desc = "Paste (insert)" })
-    vim.keymap.set("c",       "<C-S-v>", "<C-r>+", { desc = "Paste (command line)" })
-    vim.keymap.set("t",       "<C-S-v>", '<C-\\><C-n>"+Pi', { desc = "Paste (terminal)" })
-end
-
+-- ── Neovide (macOS GUI) clipboard keymapy ──────────────────────────────
+-- -- --------------------------------------------------------------------------
+-- POZOR: NE v `if vim.g.neovide`! nvim bezi headless (--listen) a Neovide
+-- se pripojuje az POTE -> vim.g.neovide je pri nacitani configu jeste false
+-- a blok by se preskocil. <D-...> stejne nelze zadat v terminalu, takze
+-- mimo Neovide jsou tyto mapy inertni (nic nerozbiji).
+map({ "n", "v" }, "<D-c>", '"+y',    { desc = "Cmd+C kopirovat" })
+map({ "n", "v" }, "<D-v>", '"+p',    { desc = "Cmd+V vlozit" })
+map({ "n", "v" }, "<D-x>", '"+d',    { desc = "Cmd+X vyjmout" })
+map({ "n", "v" }, "<D-a>", "ggVG",   { desc = "Cmd+A vybrat vse" })
+map("i",          "<D-v>", "<C-r>+", { desc = "Cmd+V vlozit (insert)" })
+map("c",          "<D-v>", "<C-r>+", { desc = "Cmd+V vlozit (cmdline)" })

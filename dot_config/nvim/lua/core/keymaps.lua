@@ -107,7 +107,7 @@ end, { desc = "Kopírovat cestu souboru" })
 
 -- --------------------------------------------------------------------------
 -- ── Neovide (macOS GUI) clipboard keymapy ──────────────────────────────
--- -- --------------------------------------------------------------------------
+-- --------------------------------------------------------------------------
 -- POZOR: NE v `if vim.g.neovide`! nvim bezi headless (--listen) a Neovide
 -- se pripojuje az POTE -> vim.g.neovide je pri nacitani configu jeste false
 -- a blok by se preskocil. <D-...> stejne nelze zadat v terminalu, takze
@@ -118,3 +118,24 @@ map({ "n", "v" }, "<D-x>", '"+d',    { desc = "Cmd+X vyjmout" })
 map({ "n", "v" }, "<D-a>", "ggVG",   { desc = "Cmd+A vybrat vse" })
 map("i",          "<D-v>", "<C-r>+", { desc = "Cmd+V vlozit (insert)" })
 map("c",          "<D-v>", "<C-r>+", { desc = "Cmd+V vlozit (cmdline)" })
+
+-- --------------------------------------------------------------------------
+-- ── Prohazovani radku (jako MS Word) ──────────────────────────────────
+-- --------------------------------------------------------------------------
+-- Ctrl+Shift+Sipka (macOS) + Shift+Alt+Sipka (Windows styl)
+-- Normal mode: posun aktualniho radku
+map("n", "<C-S-Down>", ":m .+1<CR>==",  { desc = "Přesunout řádek dolů" })
+map("n", "<C-S-Up>",   ":m .-2<CR>==",  { desc = "Přesunout řádek nahoru" })
+map("n", "<M-S-Down>", ":m .+1<CR>==",  { desc = "Přesunout řádek dolů" })
+map("n", "<M-S-Up>",   ":m .-2<CR>==",  { desc = "Přesunout řádek nahoru" })
+-- Insert mode: vyskoc, posun, vrat se do insertu
+map("i", "<C-S-Down>", "<Esc>:m .+1<CR>==gi", { desc = "Přesunout řádek dolů (insert)" })
+map("i", "<C-S-Up>",   "<Esc>:m .-2<CR>==gi", { desc = "Přesunout řádek nahoru (insert)" })
+map("i", "<M-S-Down>", "<Esc>:m .+1<CR>==gi", { desc = "Přesunout řádek dolů (insert)" })
+map("i", "<M-S-Up>",   "<Esc>:m .-2<CR>==gi", { desc = "Přesunout řádek nahoru (insert)" })
+-- Visual mode: posun celeho vyberu (zustane oznaceny)
+map("v", "<C-S-Down>", ":m '>+1<CR>gv=gv", { desc = "Přesunout výběr dolů" })
+map("v", "<C-S-Up>",   ":m '<-2<CR>gv=gv", { desc = "Přesunout výběr nahoru" })
+map("v", "<M-S-Down>", ":m '>+1<CR>gv=gv", { desc = "Přesunout výběr dolů" })
+map("v", "<M-S-Up>",   ":m '<-2<CR>gv=gv", { desc = "Přesunout výběr nahoru" })
+  
